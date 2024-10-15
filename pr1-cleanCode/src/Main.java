@@ -1,34 +1,68 @@
 package src;
 
+import java.util.ArrayList;
+
+class Product{
+    String name;
+    double price;
+    boolean isElectronic;
+    private double discount = 0;
+
+    public Product(String name, double price, boolean isElectronic){
+        this.name = name;
+        this.price = price;
+        this.isElectronic = isElectronic;
+        if(isElectronic){
+            this.discount = price * 0.15;
+        }
+    }
+
+    double getDiscount(){
+        return discount;
+    } 
+}
+
+class ShoppingCard{
+    ArrayList<Product> productList = new ArrayList<>();
+    double totalAmount = 0;
+    double totalDiscount = 0;
+
+    void addProduct (Product product){
+        productList.add(product);
+        totalAmount += product.price;
+        totalDiscount += product.getDiscount();
+    }
+
+    void printInfo () {
+        for(Product product : productList){
+            System.out.println(product.name + " $" + product.price + " discount: " + product.getDiscount());
+        }
+        System.out.println("Total price without discount: " + totalAmount);
+        System.out.println("Total discount: " + totalDiscount);
+        System.out.println("Total amount: " + (totalAmount - totalDiscount));
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
-        String[] productNames = { "Apple", "Banana", "Orange", "Laptop", "Smartphone" };
-        double[] prices = { 1.25, 0.75, 1.50, 999.99, 799.99 };
-        boolean[] isFood = { true, true, true, false, false };
-        double total = 0;
+        Product apple = new Product("Apple", 5, false);
+        Product banana = new Product("Banana", 2, false);
+        Product orange = new Product("Orange", 15, false);
 
-        System.out.println("Available products:");
-        for (int i = 0; i < productNames.length; i++) {
-            System.out.println(productNames[i] + ": $" + prices[i] + " (Food: " + isFood[i] + ")");
-        }
+        Product laptop = new Product("Laptop", 1500, true);
+        Product tablet = new Product("Tablet", 500, true);
+        Product smatphone = new Product("Smatphone", 1000, true);
+        Product headPhones = new Product("HeadPhones", 100, true);
 
-        System.out.println("User buys: Apple, Laptop and Smartphone");
-        total += prices[0];
-        total += prices[3];
-        total += prices[4];
-
-        System.out.println("Total price: $" + total);
-
-        double electronicsDiscount = 0;
-        if (!isFood[3]) {
-            electronicsDiscount += prices[3] * 0.15;
-        }
-        if (!isFood[4]) {
-            electronicsDiscount += prices[4] * 0.15;
-        }
-
-        total -= electronicsDiscount;
-        System.out.println("Electronics discount: $" + electronicsDiscount);
-        System.out.println("Final total: $" + total);
+        ShoppingCard shoppingCard = new ShoppingCard();
+        shoppingCard.addProduct(apple);
+        shoppingCard.addProduct(orange);
+        shoppingCard.addProduct(banana);
+        shoppingCard.addProduct(tablet);
+        shoppingCard.addProduct(tablet);
+        shoppingCard.addProduct(headPhones);
+        shoppingCard.addProduct(laptop);
+        shoppingCard.addProduct(smatphone);
+        shoppingCard.printInfo();
     }
 }
